@@ -1,0 +1,53 @@
+---
+title: "Transition_Matrix"
+author: "Xiangyu Wen"
+date: "3/15/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load Library
+
+```{r}
+library(ggplot2)
+```
+
+## Read data from file
+
+```{r}
+# Read data for X label
+diagonal_label = read.csv('data\\df_diag.csv')
+
+# Read data for plotting data
+plot_df = read.csv('data\\example.csv')
+
+diagonal_label
+plot_df
+```
+## Display plot
+
+```{r}
+final_df = plot_df
+df_diag = diagonal_label
+
+
+#Plot the Data
+max_value<-max(final_df$intensity)
+
+legend_break <- max(abs(max(final_df$intensity)), abs(min(final_df$intensity)))
+g <- ggplot(final_df, aes(Var1, Var2)) + geom_point(aes(size = percent, color = intensity), shape=15) + geom_point(data=df_diag, aes(size = value), shape=4) + theme_bw() + xlab("Transition to") + ylab("Transition from") + scale_y_discrete(limits=rev) + scale_x_discrete(position = "top") + scale_color_gradient2( low="#5e3c99", mid="#f7f7f7", high="#e66101", limits=c(-legend_break,legend_break)) + facet_grid(time ~ .) + labs(size = "Annual Percentage", color = "Intensity Deviation") +
+  theme(axis.text.x = element_text(angle = 90), aspect.ratio=1)
+
+g + scale_size_continuous(range=c(0,12)) + guides(
+    color = guide_colorbar(order = 0),
+    size = guide_legend(order = 1)
+  )
+
+# Save plot
+# ggsave('Transition_Matrix.png', height = 8, width = 8)
+
+```
+
