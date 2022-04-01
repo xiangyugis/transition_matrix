@@ -2,6 +2,7 @@
 # Tom Francis
 # 25 March 2022
 # pontiPy project
+# test of RStudio connection to GitHub
 
 library(ggplot2)
 
