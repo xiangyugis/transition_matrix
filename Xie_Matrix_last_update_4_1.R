@@ -2,6 +2,7 @@
 # Sam & Tom
 # 1 Apr 2022
 # pontiPy project
+# test git connection on desktop
 
 library(ggplot2)
 
