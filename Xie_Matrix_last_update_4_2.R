@@ -7,12 +7,26 @@
 library(ggplot2)
 
 # ------------------user input------------------------------
-input_df = read.csv("data\\example_data.csv", header = FALSE, stringsAsFactors = FALSE)
+input_df = read.csv("data/example_data.csv", header = FALSE, stringsAsFactors = FALSE)
 # ----------------------------------------------------------
 
 # info about input_df
 # x_categories <- input_df[3:nrow(input_df),'V2']     # number of rows to be looped
 categories <- input_df[2,3:ncol(input_df)]        # categories
+
+# create dataframe without text
+data_df <- input_df[3:nrow(input_df),3:ncol(input_df)]
+v_nc <- c(1:ncol(data_df))
+data_df[,v_nc] <- apply(data_df[ ,v_nc],2,function(x) as.numeric(as.character(x)))
+
+# create dataframe to be plotted
+basic_df <- data.frame(Time1 = c(''),          # interval start
+                       Time2 = c(''),         # interval end
+                       persistence = c(''),   # diagonal value (was diagonal_label)
+                       percent = c(''), 
+                       intensity = c(''),
+                       label = c(''))         # interval label
+matrix_df <- basic_df[-c(1),]                  # remove first blank line
 
 # populate dataframe to be plotted
 for (i in 1:length(input_df[,2])) {
@@ -33,6 +47,10 @@ for (i in 1:length(input_df[,2])) {
     # populate interval label to time column
     matrix_df[nrow(matrix_df),'label'] <- paste(time_1,time_2, sep="-")
     # calculate & populate percentage column
+    matrix_df[nrow(matrix_df),'percent'] <- 
+      (input_df[i,y+3]/(time_gap*sum(as.numeric(input_df[i,3:(2+length(categories))]))))*100
+    
+    
   }    # end of for y loop
 }      # end of for i loop
 
