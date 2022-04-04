@@ -21,11 +21,11 @@ data_df[,v_nc] <- apply(data_df[ ,v_nc],2,function(x) as.numeric(as.character(x)
 
 # create empty dataframe to be used by ggplot 
 basic_df <- data.frame(Time1 = c(''),          # interval start
-                       Time2 = c(''),         # interval end
-                       persistence = c(''),   # diagonal value (was diagonal_label)
+                       Time2 = c(''),          # interval end
+                       persistence = c(''),    # diagonal value (was diagonal_label)
                        percent = c(''), 
                        intensity = c(''),
-                       label = c(''))         # interval label
+                       label = c(''))          # interval label
 matrix_df <- basic_df[-c(1),]                  # remove first blank line
 
 # populate dataframe to be plotted - matrix_df
@@ -56,11 +56,11 @@ for (i in 1:length(input_df[,2])) {                                             
     matrix_df[nrow(matrix_df),'intensity'] <-                                      # write intensity
       (as.numeric(temp_df[r_count, y])) /                                          # cell
       ((time_gap*sum(as.numeric(temp_df[r_count,]))) * 100) -                      # time interval * sum of row
-      ((sum(as.numeric(temp_df[y,])) -                                             # sum of column
+      (((sum(as.numeric(temp_df[y,])) -                                            #   sum of column
       as.numeric(temp_df[y,y])) /                                                  # diagonal (agreement)
       (time_gap *                                                                  # time interval
       (sum(as.numeric(unlist(temp_df))) -                                          # sum of dataframe (extent)
-      sum(as.numeric(temp_df[y,])))))                                              # sum of column
+      sum(as.numeric(temp_df[y,]))))) * 100)                                       # sum of column
     if (matrix_df[nrow(matrix_df),'Time1'] == matrix_df[nrow(matrix_df),'Time2']) {# write diagonal labels
       matrix_df[nrow(matrix_df),'persistence'] <- 1
       matrix_df[nrow(matrix_df),'percent'] <- 0
