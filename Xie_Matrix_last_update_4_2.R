@@ -51,16 +51,16 @@ for (i in 1:length(input_df[,2])) {                                             
     matrix_df[nrow(matrix_df),'label'] <- paste(time_1,time_2, sep="-")            # write matrix label
     # calculate & populate percentage column
     matrix_df[nrow(matrix_df),'percent'] <-                                        # write percentage
-      (as.numeric(temp_df[r_count, y])) /                                          # cell
-      (time_gap*sum(as.numeric(temp_df[r_count,]))) * 100                          # time interval * sum of row
+      ((as.numeric(temp_df[r_count, y])) /                                         # cell
+      (time_gap*sum(as.numeric(unlist(temp_df))))) * 100                           # time interval * sum of extent
     matrix_df[nrow(matrix_df),'intensity'] <-                                      # write intensity
       (as.numeric(temp_df[r_count, y])) /                                          # cell
       ((time_gap*sum(as.numeric(temp_df[r_count,]))) * 100) -                      # time interval * sum of row
-      (sum(as.numeric(temp_df[y,])) -                                              # sum of column
+      ((sum(as.numeric(temp_df[y,])) -                                             # sum of column
       as.numeric(temp_df[y,y])) /                                                  # diagonal (agreement)
       (time_gap *                                                                  # time interval
-      (sum(as.numeric(temp_df[y,])) -                                              # sum of column
-       sum(as.numeric(unlist(temp_df)))))                                          # sum of dataframe (extent)
+      (sum(as.numeric(unlist(temp_df))) -                                          # sum of dataframe (extent)
+      sum(as.numeric(temp_df[y,])))))                                              # sum of column
     if (matrix_df[nrow(matrix_df),'Time1'] == matrix_df[nrow(matrix_df),'Time2']) {# write diagonal labels
       matrix_df[nrow(matrix_df),'persistence'] <- 1
       matrix_df[nrow(matrix_df),'percent'] <- 0
