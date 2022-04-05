@@ -25,16 +25,19 @@ basic_df <- data.frame(Time1 = c(''),          # interval start
                        persistence = c(''),    # diagonal value (was diagonal_label)
                        percent = c(''), 
                        intensity = c(''),
-                       label = c(''))          # interval label
+                       label = c(''),          # interval label
+                       weight = c(''))         # weight factor
 matrix_df <- basic_df[-c(1),]                  # remove first blank line
 
 # populate dataframe to be plotted - matrix_df
-r_count <- 0                                                                       # set counter
+r_count <- 0                                                                       # initialize counter
+time_total <- 0                                                                    # initialize time interval
 for (i in 1:length(input_df[,2])) {                                                # loop thru each row of input_df
   if (is.element(input_df[i,2], c("")) & !is.element(input_df[i,3], categories)) { # row has Y date
     time_2 <- input_df[i,3]                                                        # Y date
     time_1 <- input_df[(i+2),1]                                                    # X date
     time_gap <- as.numeric(time_2) - as.numeric(time_1)                            # time interval
+    time_total <- time_total + time_gap                                            # increment time_total
     next
   }
   if (is.element(input_df[i,2], c("")) & is.element(input_df[i,3], categories)) {  # row has Y categories
@@ -49,6 +52,8 @@ for (i in 1:length(input_df[,2])) {                                             
     matrix_df[nrow(matrix_df),'Time2'] <- categories[y]                            # write Time2 column
     # populate interval label to time column
     matrix_df[nrow(matrix_df),'label'] <- paste(time_1,time_2, sep="-")            # write matrix label
+    # populate weighting factor
+    matrix_df[nrow(matrix_df), 'weight'] <- time_gap
     # calculate & populate percentage column
     matrix_df[nrow(matrix_df),'percent'] <-                                        # write percentage
       ((as.numeric(temp_df[r_count, y])) /                                         # cell
@@ -71,6 +76,21 @@ for (i in 1:length(input_df[,2])) {                                             
 }     # end loop i 
 
 #-------------must add sum at bottom of matrix_df-------------------------------
+# create summary matrix
+for (s in 1:(length(categories)^2)) {
+  matrix_df[nrow(matrix_df) + 1,'Time1'] <- matrix_df[s,'Time1']
+  matrix_df[nrow(matrix_df),'Time2'] <- matrix_df[s,'Time2']
+  matrix_df[nrow(matrix_df),'label'] <- 'Weighted Sum'
+  # will need to loop sum calc by length(matrix_df[,1])/(length(categories)^2) (number of charts)
+  matrix_df[nrow(matrix_df),'percent'] <-  (as.numeric(matrix_df[s,'percent']) * 
+    (as.numeric(matrix_df[s,'weight']) / time_total)) +
+    (as.numeric(matrix_df[s,'percent']) * as.numeric(matrix_df[s,'weight']) / time_total)
+}    
+  
+  
+no_charts <- length(matrix_df[,1])/(length(categories)^2)
+
+
 
 # organize data frame formatting
 final_df <- matrix_df[1:16,]
