@@ -73,7 +73,7 @@ n_charts <- (length(matrix_df[,1])/(length(categories)^2) -1)                   
 for (s in 1:(length(categories)^2)) {                                             # loop # of lines for each chart
   matrix_df[nrow(matrix_df) + 1,'Time1'] <- matrix_df[s,'Time1']                  # write Time1 on new line
   matrix_df[nrow(matrix_df),'Time2'] <- matrix_df[s,'Time2']                      # write Time2
-  matrix_df[nrow(matrix_df),'label'] <- 'Weighted Sum'                            # write label
+  matrix_df[nrow(matrix_df),'label'] <- 'Weighted Average'                            # write label
   pp <- 0                                                                         # sum of percent set to 0
   ii <- 0                                                                         # sum of intensity set to 0
   for (t in 0:n_charts) {                   # loop thru charts
