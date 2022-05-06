@@ -4,7 +4,7 @@ A R Package for Analyzing Change in a Cross-Tab Matrix Display of transition mat
 
 # Input Data
 The input is a .csv file with land-cover information:  
-![image](images/raw_csv.PNG "Dataframe")
+![image](images/raw.PNG "Dataframe")
 
 The .csv should match the specific format as displayed above.
 
@@ -12,7 +12,7 @@ The .csv should match the specific format as displayed above.
 #### Example Input Data
 ![image](images/example_data.PNG "Example Dataframe")
 #### Example Output Plot
-![image](images/example_transition_matrix.PNG "Example Plot")
+![image](images/example_matrix.PNG "Example Plot")
 
 ## Work With Multiple Time Intervals
 ![image](images/muti_year_table.PNG "Example Dataframe")
